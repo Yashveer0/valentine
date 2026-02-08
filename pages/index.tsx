@@ -59,13 +59,20 @@ export default function Home() {
 
   return (
     <div className="container">
-      <div className="card flex flex-col items-center">
+      <div className="card">
 
-        <img
+        <div className="flex justify-center">
+          <img
+          src="./panda.png"
+          className="main-img  scale-x-[-1]"
+          alt="valentine"
+        /><img
           src="./panda.png"
           className="main-img"
           alt="valentine"
         />
+        </div>
+        
 
         <h1 className="title">
           {finalMessage ? finalMessage : lines[index]}

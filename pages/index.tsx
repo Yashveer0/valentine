@@ -1,78 +1,215 @@
-import Image from "next/image";
-import { Geist, Geist_Mono } from "next/font/google";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+"use client";
+import { useState } from "react";
 
 export default function Home() {
+  const [yesSize, setYesSize] = useState(1);
+  const [noPos, setNoPos] = useState({ top: "65%", left: "55%" });
+  const [hideNo, setHideNo] = useState(false);
+  const [hearts, setHearts] = useState<number[]>([]);
+  const [index, setIndex] = useState(0);
+  const [finalMessage, setFinalMessage] = useState("");
+
+  const lines = [
+    "Will you be my Valentine, Cutie? 💖",
+    "Arey itna attitude kyu? 😂",
+    "Ek chhota sa yes bol do na 🥺",
+    "Main itna bhi bura nahi hoon 😌",
+    "Mere dil ka WiFi sirf tumse connect hota hai 📶❤️",
+    "Tum mana karogi toh system hang ho jayega 💻😩",
+    "Itni cute ho, thoda sa pyaar de do 💕",
+    "Please yaar, drama mat karo 😭",
+    "Dekho phir puch raha hoon 😤",
+    "Yes bolne me kya jaa raha hai 😏",
+    "Main chocolate bhi dunga 🍫😌",
+    "Tumhari smile pe full flat hoon 😍",
+    "Itna mat bhaago, No button bhi thak gaya 😂",
+    "Dil ka notification tum hi ho 🔔💖",
+    "Ab toh maan jao na 😩",
+    "Ek baar yes bolke dekh lo 😉",
+    "Mujhe ignore karna illegal hona chahiye 🚨😂",
+    "Cutie please, system crash ho raha hai 😭",
+    "Itni der se puch raha hoon 😅",
+    "Agar mana kiya toh sad playlist chalu kar dunga 🎵💔",
+    "Tum meri default setting ho ❤️",
+    "Itna torture mat karo 😩",
+    "Last 3 chances bache hain 😤",
+    "Last 2 chances 😳",
+    "Last 1 chance 😭",
+    "Ab seriously puch raha hoon... banogi meri Valentine? 💘"
+  ];
+
+  const handleNo = () => {
+    const randomTop = Math.random() * 70 + "%";
+    const randomLeft = Math.random() * 70 + "%";
+    setNoPos({ top: randomTop, left: randomLeft });
+
+    setYesSize((prev) => prev + 0.25);
+
+    if (index < lines.length - 1) {
+      setIndex((prev) => prev + 1);
+    }
+  };
+
+  const handleYes = () => {
+    setHideNo(true);
+    setFinalMessage("Yayyyyy 😍💖 I knew it cutie!!! You just made my whole year special 💕✨");
+    const newHearts = Array.from({ length: 50 }, (_, i) => i);
+    setHearts(newHearts);
+  };
+
   return (
-    <div
-      className={`${geistSans.className} ${geistMono.className} flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black`}
-    >
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div className="container">
+      <div className="card flex flex-col items-center">
+
+        <img
+          src="./panda.png"
+          className="main-img"
+          alt="valentine"
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the index.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+
+        <h1 className="title">
+          {finalMessage ? finalMessage : lines[index]}
+        </h1>
+
+        <div className="btn-area">
+          {!finalMessage && (
+            <>
+              <button
+                className="yes"
+                style={{ transform: `scale(${yesSize})` }}
+                onClick={handleYes}
+              >
+                Yes 💕
+              </button>
+
+              {!hideNo && (
+                <button
+                  className="no"
+                  style={{ top: noPos.top, left: noPos.left }}
+                  onClick={handleNo}
+                >
+                  No 😢
+                </button>
+              )}
+            </>
+          )}
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs/pages/getting-started?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <p className="credit">Developer by Yash 💻❤️</p>
+      </div>
+
+      {hearts.map((i) => (
+        <div
+          key={i}
+          className="floating-heart"
+          style={{
+            left: Math.random() * 100 + "%",
+            animationDuration: 2 + Math.random() * 3 + "s"
+          }}
+        >
+          💖
         </div>
-      </main>
+      ))}
+
+      <style jsx>{`
+        .container {
+          height: 100vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+          font-family: "Segoe UI", sans-serif;
+          overflow: hidden;
+          position: relative;
+          padding: 10px;
+        }
+
+        .card {
+          background: white;
+          padding: 35px;
+          border-radius: 25px;
+          text-align: center;
+          width: 100%;
+          max-width: 450px;
+          box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+          animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; transform: scale(0.9); }
+          to { opacity: 1; transform: scale(1); }
+        }
+
+        .main-img {
+          width: 230px;
+          border-radius: 20px;
+          animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+          0%,100% { transform: translateY(0); }
+          50% { transform: translateY(-15px); }
+        }
+
+        .title {
+          font-size: 20px;
+          margin: 20px 0;
+          color: #ff4d6d;
+          min-height: 60px;
+          transition: all 0.4s ease;
+        }
+
+        .btn-area {
+          position: relative;
+          height: 180px;
+          margin-top: 20px;
+        }
+
+        button {
+          padding: 12px 30px;
+          border-radius: 20px;
+          border: none;
+          cursor: pointer;
+          font-size: 16px;
+          position: absolute;
+          transition: all 0.3s ease;
+        }
+
+        .yes {
+          background: #ff4d6d;
+          color: white;
+          left: 20%;
+          top: 65%;
+        }
+
+        .no {
+          background: #666;
+          color: white;
+        }
+
+        .credit {
+          margin-top: 20px;
+          font-size: 13px;
+          color: gray;
+        }
+
+        .floating-heart {
+          position: absolute;
+          bottom: 0;
+          font-size: 32px;
+          animation: floatUp linear forwards;
+        }
+
+        @keyframes floatUp {
+          from { transform: translateY(0); opacity: 1; }
+          to { transform: translateY(-100vh); opacity: 0; }
+        }
+
+        @media (max-width: 480px) {
+          .main-img { width: 180px; }
+          .title { font-size: 17px; }
+        }
+      `}</style>
     </div>
   );
 }
